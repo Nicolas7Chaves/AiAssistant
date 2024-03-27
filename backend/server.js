@@ -42,7 +42,7 @@ async function createAssistant() {
     const myAssistant = await openai.beta.assistants.create({
         instructions: "You are great at recommending movies. When asked a question, use the information in the provided file to form a friendly response. If you cannot find the answer in the file, do your best to infer what the answer should be.",
         name: "Movie Expert",
-        tools: [{ type: "retrieval"}],
+        tools: [{ type: "retrieval" }],
         model: "gpt-4-1106-preview",
         //file id is retrieved from console.log(file) object
         file_ids: ["file-zptnBHmoYczbdjLhPEu0lo2N"]
@@ -60,10 +60,29 @@ const threadID = "thread_vsVE2HYCm1RsxBVkcdi3rVcL"
 
 async function createMessage() {
     const threadMessages = await openai.beta.threads.messages.create(
-        "thread_abc123",
+        threadID,
         {
             role: "user",
-            content: "How does AI work? Explain it in simple terms."
+            content: "recommend me a comedy movie"
         }
     );
+    console.log(threadMessages)
 }
+createMessage()
+
+async function runThread() {
+    const run = await openai.beta.threads.runs.create(
+        threadID,
+        { assistant_id: asstID }
+    );
+    console.log(run);
+}
+
+runThread();
+
+// Get the current run
+const currentRun = await openai.beta.threads.runs.retrieve(
+    threadID,
+    'run_fnSGUQy4adAGOtaiFHjtWlsl'
+);
+console.log("Run status: " + currentRun.status);
