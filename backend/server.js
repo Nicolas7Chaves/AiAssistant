@@ -58,17 +58,11 @@ const asstID = "asst_OK5bfSQIqW8FUIk6MbuXrGSu"
 // Id retrieved from thread object
 const threadID = "thread_vsVE2HYCm1RsxBVkcdi3rVcL"
 
-async function createMessage() {
-    const threadMessages = await openai.beta.threads.messages.create(
-        threadID,
-        {
-            role: "user",
-            content: "recommend me a comedy movie"
-        }
-    );
-    console.log(threadMessages)
+async function listMessages() {
+    const threadMessages = await openai.beta.threads.messages.list(threadID);
+    console.log("Expert:" , threadMessages.data[0].content[0].text.value)
 }
-createMessage()
+listMessages();
 
 async function runThread() {
     const run = await openai.beta.threads.runs.create(
@@ -80,9 +74,21 @@ async function runThread() {
 
 runThread();
 
+async function createMessage() {
+    const threadMessages = await openai.beta.threads.messages.create(
+        threadID,
+        {
+            role: "user",
+            content: "recommend me a comedy movie"
+        }
+    );
+    console.log(threadMessages)
+}
+createMessage()
+const runID = "run_u3m5pAQzPSpsS3a0bGsUnO89"
 // Get the current run
 const currentRun = await openai.beta.threads.runs.retrieve(
     threadID,
-    'run_fnSGUQy4adAGOtaiFHjtWlsl'
+    runID
 );
 console.log("Run status: " + currentRun.status);
