@@ -15,7 +15,7 @@ if (!process.env.OPENAI_API_KEY) throw new Error("OpenAI API key is missing or i
 const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY
 });
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.SERVER_PORT || 5000;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
